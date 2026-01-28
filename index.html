@@ -2,19 +2,33 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Generador de Código de Barras - MELI</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="description" content="Herramienta interna para configuración de Ring Scanner RS5100">
+  <title>Configuración Ring Scanner RS5100 - Herramienta Interna</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: url('https://www.woosync.io/wp-content/uploads/2022/02/3-Trucos-para-vender-mas-por-Internet-e-incrementar-ventas.jpg') no-repeat center center fixed;
+      background: url('imagen meli.jpg') no-repeat center center fixed;
       background-size: cover;
       margin: 0;
       padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
+    }
+
+    .meli-logo {
+      height: 40px;
+    }
+
+    .btn-icon {
+      height: 18px;
+      width: 18px;
+      object-fit: contain;
+      vertical-align: -3px;
+      margin-right: 8px;
     }
 
     .container {
@@ -33,10 +47,6 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 20px;
-    }
-
-    .meli-logo {
-      height: 40px;
     }
 
     .switch-wrapper {
@@ -157,13 +167,11 @@
       background-color: #ddd;
     }
 
-    /* Botón para abrir bluetooth-internals */
     #openBluetoothBtn {
       background-color: #0073e6;
       color: #fff;
     }
 
-    /* Botones de la pantalla inicial */
     #configBtn {
       background-color: #0073e6;
       color: #fff;
@@ -173,15 +181,7 @@
       background-color: #ffdd00;
     }
 
-    .btn-icon {
-      height: 18px;
-      width: 18px;
-      object-fit: contain;
-      vertical-align: -3px;
-      margin-right: 8px;
-    }
 
-    /* Modal integrado para instrucciones de Bluetooth Internals */
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -242,10 +242,10 @@
       margin: 12px 0 6px 0;
     }
 
-    .link-box a {
-      color: #0073e6;
-      text-decoration: none;
+    .link-box code {
+      color: #333;
       font-weight: bold;
+      font-family: monospace;
     }
 
     .modal-actions {
@@ -254,23 +254,10 @@
       margin-top: 10px;
     }
 
-    /* Botón abrir nueva pestaña en el modal */
     #openNewTabBtn {
       background-color: #ffdd00;
     }
 
-    .manual-paste {
-      width: 100%;
-      min-height: 80px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      padding: 10px;
-      box-sizing: border-box;
-      margin-top: 10px;
-      font-family: inherit;
-    }
-
-    /* Caja de información (amarillo suave) */
     .info-box {
       background: #fff4b8;
       border: 1px solid #f0e1a0;
@@ -320,8 +307,6 @@
       max-width: 100%;
     }
 
-    /* Logo pequeño tipo ícono sobre el código */
-
     .result-logo {
       display: none;
       justify-content: center;
@@ -353,7 +338,7 @@
   <div class="container">
     <div class="header">
       <div class="logo">
-        <img id="meliLogo" src="https://logodownload.org/wp-content/uploads/2018/10/mercado-libre-logo.png" alt="MercadoLibre Logo" class="meli-logo">
+        <img id="meliLogo" src="mercado-libre-logo.png" alt="MercadoLibre Logo" class="meli-logo">
       </div>
       <div class="switch-wrapper">
         <span class="lang-label">ES</span>
@@ -370,11 +355,11 @@
 
     <!-- Pantalla inicial (Landing) -->
     <div id="landingContainer">
-      <button type="button" id="configBtn">⚙️ Configuración inicial</button>
-      <button type="button" id="startBarcodeBtn"><i class="fas fa-barcode"></i> Generar Barcode Bluetooth</button>
+      <button type="button" id="configBtn"><img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/2040/2040504.png" alt=""> <span id="configBtnText">Configuración inicial</span></button>
+      <button type="button" id="startBarcodeBtn"><img class="btn-icon" src="https://cdn-icons-png.flaticon.com/512/39/39881.png" alt=""> <span id="startBarcodeBtnText">Generar Barcode Bluetooth</span></button>
       <div id="browserVersion" class="browser-version">
         <span id="browserVersionLabel"></span>
-        <div id="versionWarn" class="warn-box" style="display:none;">Actualizar ChromeOS desde Settings</div>
+        <div id="versionWarn" class="warn-box" style="display:none;"></div>
       </div>
     </div>
 
@@ -387,7 +372,7 @@
           Ingresar MAC Bluetooth<br>
           <span style="font-size: 0.9em; color: #555;">(desde navegador ChromeOS: chrome://bluetooth-internals)</span>
         </label>
-        <button type="button" id="openBluetoothBtn" onclick="onOpenBluetoothClick()">Extraer MAC Bluetooth</button>
+        <button type="button" id="openBluetoothBtn">Extraer MAC Bluetooth</button>
         <input type="text" id="mac" name="mac" placeholder="Ej: AABBCC112233" required>
         <button type="submit" id="submitBtn">Generar Código</button>
         <button type="button" id="backToHomeFromFormBtn" style="background:#ddd;">Volver</button>
@@ -400,7 +385,7 @@
       <button id="backBtn" onclick="goBack()">Volver</button>
     </div>
 
-    <!-- Modal integrado para abrir bluetooth-internals -->
+    <!-- Modal para instrucciones de MAC -->
     <div id="bluetoothModal" class="modal-overlay">
       <div class="modal">
         <div class="modal-header">
@@ -408,14 +393,14 @@
           <button class="close-btn" aria-label="Cerrar" onclick="closeBluetoothModal()">✕</button>
         </div>
         <div class="modal-body">
-          <p id="bluetoothInstructions">Para obtener la dirección MAC Bluetooth, copia y abre el enlace en una nueva pestaña. En la sección Adapter, copia el valor que aparece en Address y regresa a la seccion "Generar Código" para continuar el proceso.</p>
+          <p id="bluetoothInstructions">Para obtener la dirección MAC Bluetooth, copia y abre el enlace en una nueva pestaña. En la sección Adapter, copia el valor que aparece en Address y regresa a la sección "Generar Código" para continuar el proceso.</p>
           <div class="link-box">
-            <a id="bluetoothLink" href="#" rel="noopener noreferrer">chrome://bluetooth-internals</a>
+            <a id="bluetoothLink" href="#" rel="noopener noreferrer" style="color:#0073e6; text-decoration:none; font-weight:bold;">chrome://bluetooth-internals</a>
             <button type="button" id="copyLinkBtn" class="close-btn" style="font-size:0.95em;" onclick="copyBluetoothLink()">Copiar enlace</button>
           </div>
           <div id="copyFeedback" style="font-size:0.9em; color:#2e7d32; display:none;">Enlace copiado</div>
           <div class="modal-actions">
-            <button type="button" id="openNewTabBtn" onclick="openNewTab()">Abrir una nueva pestaña</button>
+            <button type="button" id="openNewTabBtn" style="background:#ffdd00;" onclick="openNewTab()">Abrir una nueva pestaña</button>
             <button type="button" id="modalBackBtn" style="background:#ddd;" onclick="closeBluetoothModal()">Volver</button>
           </div>
         </div>
@@ -424,12 +409,7 @@
 
     <!-- Pantalla de Configuración Inicial -->
     <div id="configContainer" style="display:none;">
-      <div id="configIntro" class="info-box">
-        Para configurar correctamente el Ring Scanner, deberá escanear los siguientes códigos de barras en el orden indicado, a fin de completar la configuración de manera adecuada.<br><br>
-        <strong>Puntos a tener en cuenta:</strong><br>
-        - Si el firmware del Ring es <strong>MELI</strong>, deberá escanear los códigos del <strong>1 al 4</strong> en orden.<br>
-        - Si el firmware del Ring es <strong>GLOBAL</strong>, deberá escanear únicamente el <strong>código 4</strong>.
-      </div>
+      <div id="configIntro" class="info-box"></div>
       <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:10px;">
         <button type="button" id="barcode1Btn" style="background:#ffdd00;">BarCode 1</button>
         <button type="button" id="barcode2Btn" style="background:#ffdd00;">BarCode 2</button>
@@ -462,67 +442,63 @@
         homeTitle: "<span style='color:#0073e6; font-weight:bold;'>SHIPPING MELI</span><br>Proceso de Ring Scanner RS5100",
         title: "<span style='color:#0073e6; font-weight:bold;'>SHIPPING MELI</span><br>Generador de Código de Barras",
         macLabel: "Ingresar MAC Bluetooth<br><span style='font-size: 0.9em; color: #555;'>(Obtenido desde navegador ChromeOS: chrome://bluetooth-internals)</span>",
+        macHint: "(Obtenido desde navegador ChromeOS: chrome://bluetooth-internals)",
         placeholder: "Ej: AABBCC112233",
         submitBtn: "Generar Código",
         openBluetooth: "Extraer MAC Bluetooth",
         configInit: "Configuración inicial",
         startBarcode: "Generar Barcode Bluetooth",
-        configImageAlt: "Configuración inicial RS5100",
         bluetoothInstructions: "Para obtener la dirección MAC Bluetooth, copia y abre el enlace en una nueva pestaña. En la sección Adapter, copia el valor que aparece en Address y regresa a la sección \"Generar Código\" para continuar el proceso.",
         bluetoothTitle: "Obtener MAC Bluetooth de ChromeOS",
         copyLink: "Copiar enlace",
         openNewTab: "Abrir una nueva pestaña",
         modalBack: "Volver",
-        openImage: "Ver Códigos de Configuración",
+        configIntro: "Para configurar correctamente el Ring Scanner, deberá escanear los siguientes códigos de barras en el orden indicado, a fin de completar la configuración de manera adecuada.<br><br><strong>Puntos a tener en cuenta:</strong><ul><li>Si el firmware del Ring es <strong>MELI</strong>, deberá escanear los códigos del <strong>1 al 4</strong> en orden.</li><li>Si el firmware del Ring es <strong>GLOBAL</strong>, deberá escanear únicamente el <strong>código 4</strong>.</li></ul>",
         imageTitle: "Códigos de configuración",
         close: "Cerrar",
-        configIntro: "Para configurar correctamente el Ring Scanner, deberá escanear los siguientes códigos de barras en el orden indicado, a fin de completar la configuración de manera adecuada.<br><br><strong>Puntos a tener en cuenta:</strong><ul><li>Si el firmware del Ring es <strong>MELI</strong>, deberá escanear los códigos del <strong>1 al 4</strong> en orden.</li><li>Si el firmware del Ring es <strong>GLOBAL</strong>, deberá escanear únicamente el <strong>código 4</strong>.</li></ul>",
-        openWindow: "Abrir en nueva ventana",
-        pasteClipboard: "Pegar MAC del portapapeles",
-        manualPastePlaceholder: "Pega aquí el contenido copiado de la sección Adapter...",
-        alert: "Por favor ingresa una MAC válida",
-        logo: "https://logodownload.org/wp-content/uploads/2018/10/mercado-libre-logo.png",
+        alert: "Por favor ingresa una MAC válida (12 caracteres hexadecimales)",
         print: "Imprimir Código",
         back: "Volver",
-        updateChrome: "Actualizar Chrome",
-        updateWarn: "Actualizar ChromeOS desde Settings",
+        updateWarn: "Actualizar ChromeOS desde Configuración",
+        step1: "Abre una nueva pestaña en Chrome",
+        step2: "Escribe en la barra de direcciones:",
+        step3: "En la sección \"Adapter\", copia el valor de \"Address\"",
+        step4: "Regresa aquí y pégalo en el campo MAC",
+        copied: "✓ Copiado",
+        logo: "mercado-libre-logo.png"
       },
       pt: {
         homeTitle: "<span style='color:#0073e6; font-weight:bold;'>SHIPPING MELI</span><br>Processo do Ring Scanner RS5100",
         title: "<span style='color:#0073e6; font-weight:bold;'>SHIPPING MELI</span><br>Gerador de Código de Barras",
         macLabel: "Inserir MAC Bluetooth<br><span style='font-size: 0.9em; color: #555;'>(Obtido no navegador ChromeOS: chrome://bluetooth-internals)</span>",
+        macHint: "(Obtido no navegador ChromeOS: chrome://bluetooth-internals)",
         placeholder: "Ex: AABBCC112233",
         submitBtn: "Gerar Código",
         openBluetooth: "Extrair MAC Bluetooth",
         configInit: "Configuração inicial",
         startBarcode: "Gerar Barcode Bluetooth",
-        configImageAlt: "Configuração inicial RS5100",
         bluetoothInstructions: "Para obter o endereço MAC Bluetooth, copie e abra o link em uma nova aba. Na seção Adapter, copie o valor de Address e volte para a seção \"Gerar Código\" para continuar.",
         bluetoothTitle: "Obter MAC Bluetooth do ChromeOS",
         copyLink: "Copiar link",
         openNewTab: "Abrir uma nova aba",
         modalBack: "Voltar",
-        openImage: "Ver Códigos de Configuração",
+        configIntro: "Para configurar corretamente o Ring Scanner, você deve escanear os seguintes códigos de barras na ordem indicada, a fim de concluir a configuração adequadamente.<br><br><strong>Pontos a considerar:</strong><ul><li>Se o firmware do Ring for <strong>MELI</strong>, escaneie os códigos de <strong>1 a 4</strong> em ordem.</li><li>Se o firmware do Ring for <strong>GLOBAL</strong>, escaneie apenas o <strong>código 4</strong>.</li></ul>",
         imageTitle: "Códigos de configuração",
         close: "Fechar",
-        configIntro: "Para configurar corretamente o Ring Scanner, você deve escanear os seguintes códigos de barras na ordem indicada, a fim de concluir a configuração adequadamente.<br><br><strong>Pontos a considerar:</strong><ul><li>Se o firmware do Ring for <strong>MELI</strong>, escaneie os códigos de <strong>1 a 4</strong> em ordem.</li><li>Se o firmware do Ring for <strong>GLOBAL</strong>, escaneie apenas o <strong>código 4</strong>.</li></ul>",
-        openWindow: "Abrir em nova janela",
-        pasteClipboard: "Colar MAC da área de transferência",
-        manualPastePlaceholder: "Cole aqui o conteúdo copiado da seção Adapter...",
-        alert: "Por favor, insira um MAC válido",
-        logo: "https://upload.wikimedia.org/wikipedia/pt/0/04/Logotipo_MercadoLivre.png",
+        alert: "Por favor, insira um MAC válido (12 caracteres hexadecimais)",
         print: "Imprimir Código",
         back: "Voltar",
-        updateChrome: "Atualizar o Chrome",
         updateWarn: "Atualize o ChromeOS nas Configurações",
+        step1: "Abra uma nova aba no Chrome",
+        step2: "Digite na barra de endereços:",
+        step3: "Na seção \"Adapter\", copie o valor de \"Address\"",
+        step4: "Volte aqui e cole no campo MAC",
+        copied: "✓ Copiado",
+        logo: "Logotipo_MercadoLivre.png"
       }
     };
 
     let currentLang = 'es';
-
-    // Iconos solicitados (Flaticon)
-    const ICON_BARCODE = 'https://cdn-icons-png.flaticon.com/512/39/39881.png';
-    const ICON_SETTINGS = 'https://cdn-icons-png.flaticon.com/512/2040/2040504.png';
 
     function setTextIfExists(id, text) {
       const el = document.getElementById(id);
@@ -544,111 +520,15 @@
       if (el) el.src = src;
     }
 
-    function setAltIfExists(id, alt) {
-      const el = document.getElementById(id);
-      if (el) el.alt = alt;
-    }
-
-    function escapeHTML(unsafe) {
-      try {
-        return String(unsafe)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/\"/g, '&quot;')
-          .replace(/'/g, '&#039;');
-      } catch (e) {
-        return '';
-      }
-    }
-
-    async function getManagedDeviceSerial() {
-      try {
-        const devAttrs = window.chrome && chrome.enterprise && chrome.enterprise.deviceAttributes;
-        if (devAttrs && typeof devAttrs.getDeviceSerialNumber === 'function') {
-          return await new Promise(resolve => {
-            try { devAttrs.getDeviceSerialNumber(sn => resolve((sn || '').trim())); }
-            catch (e) { resolve(''); }
-          });
-        }
-      } catch (e) {}
-      return '';
-    }
-
-    function setLanguage(lang) {
-      currentLang = lang;
-      try { localStorage.setItem('lang', currentLang); } catch (e) {}
-      setHTMLIfExists('homeTitle', translations[lang].homeTitle);
-      setHTMLIfExists('title', translations[lang].title);
-      setHTMLIfExists('macLabel', translations[lang].macLabel);
-      // campos removidos del formulario (serial/log); sólo mantenemos etiquetas de referencia por compatibilidad
-      setHTMLIfExists('bluetoothInstructions', translations[lang].bluetoothInstructions);
-      setTextIfExists('bluetoothTitle', translations[lang].bluetoothTitle);
-      setTextIfExists('copyLinkBtn', translations[lang].copyLink);
-      setTextIfExists('openNewTabBtn', translations[lang].openNewTab);
-      setTextIfExists('modalBackBtn', translations[lang].modalBack);
-      setHTMLIfExists('configIntro', translations[lang].configIntro);
-      setTextIfExists('openImageBtn', translations[lang].openImage);
-      setTextIfExists('configImageTitle', translations[lang].imageTitle);
-      setTextIfExists('closeImageBtn', translations[lang].close);
-      const bv = document.getElementById('browserVersionLabel');
-      if (bv) bv.innerText = getBrowserVersionLabel(lang);
-      setTextIfExists('versionWarn', translations[lang].updateWarn);
-      setPlaceholderIfExists('mac', translations[lang].placeholder);
-      setTextIfExists('submitBtn', translations[lang].submitBtn);
-      setTextIfExists('openBluetoothBtn', translations[lang].openBluetooth);
-      setHTMLIfExists('configBtn', `<img class="btn-icon" src="${ICON_SETTINGS}" alt=""> ${translations[lang].configInit}`);
-      setHTMLIfExists('startBarcodeBtn', `<img class="btn-icon" src="${ICON_BARCODE}" alt=""> ${translations[lang].startBarcode}`);
-      // elementos opcionales removidos del modal; ignorar si no existen
-      setTextIfExists('openBluetoothWindowBtn', translations[lang].openWindow);
-      setTextIfExists('pasteFromClipboardBtn', translations[lang].pasteClipboard);
-      setPlaceholderIfExists('manualPasteArea', translations[lang].manualPastePlaceholder);
-      setTextIfExists('printBtn', translations[lang].print);
-      setTextIfExists('backBtn', translations[lang].back);
-      setTextIfExists('backToHomeBtn', translations[lang].back);
-      setSrcIfExists('meliLogo', translations[lang].logo);
-    }
-
-    document.getElementById('langToggle').addEventListener('change', function () {
-      setLanguage(this.checked ? 'pt' : 'es');
-    });
-
-    // Detecta idioma inicial del navegador y ajusta el toggle
-    function detectInitialLanguage() {
-      try {
-        const langs = (navigator.languages || []).map(l => (l || '').toLowerCase());
-        const primary = (navigator.language || '').toLowerCase();
-        if (langs.some(l => l.startsWith('pt')) || primary.startsWith('pt')) return 'pt';
-        return 'es';
-      } catch (e) { return 'es'; }
-    }
-
-    // Preferir preferencia guardada si existe
-    try {
-      const savedLang = localStorage.getItem('lang');
-      if (savedLang === 'pt' || savedLang === 'es') {
-        currentLang = savedLang;
-      } else {
-        currentLang = detectInitialLanguage();
-      }
-    } catch (e) {
-      currentLang = detectInitialLanguage();
-    }
-    try { document.getElementById('langToggle').checked = (currentLang === 'pt'); } catch (e) {}
-
     function detectChromeVersion() {
       try {
         const ua = navigator.userAgent || '';
-        // En algunos builds, la versión completa viene en "Chrome/140.0.0.0" y el build real en Edg/ o Safari/WebKit no aplica.
-        // Intentar extraer version completa de "Version/" (Android), o de WebView fallback
         let m = ua.match(/(?:Chrome|CriOS)\/(\d+\.\d+\.\d+\.\d+)/);
         if (m) return m[1];
         m = ua.match(/(?:Chrome|CriOS)\/(\d+\.\d+\.\d+)/);
         if (m) return m[1];
-        // Probar patrón con "Version/xx.xx.xx.xx" (p.e. WebView Android)
         m = ua.match(/Version\/(\d+\.\d+\.\d+\.\d+)/);
         if (m) return m[1];
-        // Fallback a UA-CH (suele dar solo major)
         const uaData = navigator.userAgentData;
         if (uaData && Array.isArray(uaData.brands)) {
           const brand = uaData.brands.find(b => /Chrom(e|ium)/i.test(b.brand));
@@ -661,7 +541,6 @@
     function getBrowserVersionLabel(lang) {
       const version = detectChromeVersion();
       if (!version) return lang === 'pt' ? 'Versão do Chrome: desconhecida' : 'Versión de Chrome: desconocida';
-      // Si las subversiones están ocultas (ej. 140.0.0.0), mostrar solo la principal
       let display = version;
       try {
         const m = version.match(/^(\d+)(?:\.(\d+))?(?:\.(\d+))?(?:\.(\d+))?$/);
@@ -676,11 +555,68 @@
       return lang === 'pt' ? `Versão do Chrome: ${display}` : `Versión de Chrome: ${display}`;
     }
 
+    function setLanguage(lang) {
+      currentLang = lang;
+      try { localStorage.setItem('lang', currentLang); } catch (e) {}
+      
+      setHTMLIfExists('homeTitle', translations[lang].homeTitle);
+      setHTMLIfExists('title', translations[lang].title);
+      setHTMLIfExists('macLabel', translations[lang].macLabel);
+      setTextIfExists('bluetoothInstructions', translations[lang].bluetoothInstructions);
+      setTextIfExists('bluetoothTitle', translations[lang].bluetoothTitle);
+      setTextIfExists('copyLinkBtn', translations[lang].copyLink);
+      setTextIfExists('openNewTabBtn', translations[lang].openNewTab);
+      setTextIfExists('modalBackBtn', translations[lang].modalBack);
+      setHTMLIfExists('configIntro', translations[lang].configIntro);
+      setTextIfExists('configImageTitle', translations[lang].imageTitle);
+      setTextIfExists('closeImageBtn', translations[lang].close);
+      setTextIfExists('step1', translations[lang].step1);
+      setTextIfExists('step2', translations[lang].step2);
+      setTextIfExists('step3', translations[lang].step3);
+      setTextIfExists('step4', translations[lang].step4);
+      
+      const bv = document.getElementById('browserVersionLabel');
+      if (bv) bv.innerText = getBrowserVersionLabel(lang);
+      setTextIfExists('versionWarn', translations[lang].updateWarn);
+      setPlaceholderIfExists('mac', translations[lang].placeholder);
+      setTextIfExists('submitBtn', translations[lang].submitBtn);
+      setTextIfExists('openBluetoothBtn', translations[lang].openBluetooth);
+      setTextIfExists('configBtnText', translations[lang].configInit);
+      setTextIfExists('startBarcodeBtnText', translations[lang].startBarcode);
+      setTextIfExists('printBtn', translations[lang].print);
+      setTextIfExists('backBtn', translations[lang].back);
+      setTextIfExists('backToHomeBtn', translations[lang].back);
+      setTextIfExists('backToHomeFromFormBtn', translations[lang].back);
+      setSrcIfExists('meliLogo', translations[lang].logo);
+    }
+
+    document.getElementById('langToggle').addEventListener('change', function () {
+      setLanguage(this.checked ? 'pt' : 'es');
+    });
+
+    function detectInitialLanguage() {
+      try {
+        const langs = (navigator.languages || []).map(l => (l || '').toLowerCase());
+        const primary = (navigator.language || '').toLowerCase();
+        if (langs.some(l => l.startsWith('pt')) || primary.startsWith('pt')) return 'pt';
+        return 'es';
+      } catch (e) { return 'es'; }
+    }
+
+    try {
+      const savedLang = localStorage.getItem('lang');
+      if (savedLang === 'pt' || savedLang === 'es') {
+        currentLang = savedLang;
+      } else {
+        currentLang = detectInitialLanguage();
+      }
+    } catch (e) {
+      currentLang = detectInitialLanguage();
+    }
+    try { document.getElementById('langToggle').checked = (currentLang === 'pt'); } catch (e) {}
+
     setLanguage(currentLang);
-    // Inicializa rótulo de versión en landing
-    const bv = document.getElementById('browserVersionLabel');
-    if (bv) bv.innerText = getBrowserVersionLabel(currentLang);
-    // Mostrar advertencia si versión < 140
+    
     try {
       const version = detectChromeVersion();
       const major = parseInt((version.match(/^(\d+)/) || [,'0'])[1], 10);
@@ -690,53 +626,38 @@
 
     // Navegación entre pantallas
     function showHome() {
-      const home = document.getElementById('landingContainer');
-      const form = document.getElementById('formContainer');
-      const result = document.getElementById('resultContainer');
-      const config = document.getElementById('configContainer');
-      const homeTitle = document.getElementById('homeTitle');
-      const barcodeTitle = document.getElementById('title');
-      if (home) home.style.display = 'block';
-      if (form) form.style.display = 'none';
-      if (result) result.style.display = 'none';
-      if (config) config.style.display = 'none';
-      if (homeTitle) homeTitle.style.display = 'block';
-      if (barcodeTitle) barcodeTitle.style.display = 'none';
+      document.getElementById('landingContainer').style.display = 'block';
+      document.getElementById('formContainer').style.display = 'none';
+      document.getElementById('resultContainer').style.display = 'none';
+      document.getElementById('configContainer').style.display = 'none';
+      document.getElementById('homeTitle').style.display = 'block';
+      document.getElementById('title').style.display = 'none';
     }
 
     function showConfig() {
-      const home = document.getElementById('landingContainer');
-      const config = document.getElementById('configContainer');
-      const homeTitle = document.getElementById('homeTitle');
-      const barcodeTitle = document.getElementById('title');
-      if (home) home.style.display = 'none';
-      if (config) config.style.display = 'block';
-      if (homeTitle) homeTitle.style.display = 'block';
-      if (barcodeTitle) barcodeTitle.style.display = 'none';
+      document.getElementById('landingContainer').style.display = 'none';
+      document.getElementById('configContainer').style.display = 'block';
+      document.getElementById('homeTitle').style.display = 'block';
+      document.getElementById('title').style.display = 'none';
     }
 
     function showBarcodeForm() {
-      const home = document.getElementById('landingContainer');
-      const form = document.getElementById('formContainer');
-      const result = document.getElementById('resultContainer');
-      const config = document.getElementById('configContainer');
-      const homeTitle = document.getElementById('homeTitle');
-      const barcodeTitle = document.getElementById('title');
-      if (home) home.style.display = 'none';
-      if (config) config.style.display = 'none';
-      if (result) result.style.display = 'none';
-      if (form) form.style.display = 'block';
-      if (homeTitle) homeTitle.style.display = 'none';
-      if (barcodeTitle) barcodeTitle.style.display = 'block';
+      document.getElementById('landingContainer').style.display = 'none';
+      document.getElementById('configContainer').style.display = 'none';
+      document.getElementById('resultContainer').style.display = 'none';
+      document.getElementById('formContainer').style.display = 'block';
+      document.getElementById('homeTitle').style.display = 'none';
+      document.getElementById('title').style.display = 'block';
     }
 
-    // Botones de navegación
-    const configBtn = document.getElementById('configBtn');
-    if (configBtn) configBtn.addEventListener('click', showConfig);
-    const startBarcodeBtn = document.getElementById('startBarcodeBtn');
-    if (startBarcodeBtn) startBarcodeBtn.addEventListener('click', showBarcodeForm);
-    const backToHomeBtn = document.getElementById('backToHomeBtn');
-    if (backToHomeBtn) backToHomeBtn.addEventListener('click', showHome);
+    document.getElementById('configBtn').addEventListener('click', showConfig);
+    document.getElementById('startBarcodeBtn').addEventListener('click', showBarcodeForm);
+    document.getElementById('backToHomeBtn').addEventListener('click', showHome);
+    document.getElementById('backToHomeFromFormBtn').addEventListener('click', function() {
+      document.getElementById('barcodeForm').reset();
+      showHome();
+    });
+
     function showCodeImage(src) {
       const modal = document.getElementById('configImageModal');
       const img = document.getElementById('configImageFull');
@@ -746,50 +667,36 @@
       }
     }
 
-    const barcode1Btn = document.getElementById('barcode1Btn');
-    if (barcode1Btn) barcode1Btn.addEventListener('click', function(){ showCodeImage('code1.png'); });
-    const barcode2Btn = document.getElementById('barcode2Btn');
-    if (barcode2Btn) barcode2Btn.addEventListener('click', function(){ showCodeImage('code2.png'); });
-    const barcode3Btn = document.getElementById('barcode3Btn');
-    if (barcode3Btn) barcode3Btn.addEventListener('click', function(){ showCodeImage('code3.png'); });
-    const barcode4Btn = document.getElementById('barcode4Btn');
-    if (barcode4Btn) barcode4Btn.addEventListener('click', function(){ showCodeImage('code4.png'); });
+    document.getElementById('barcode1Btn').addEventListener('click', function() { showCodeImage('code1.png'); });
+    document.getElementById('barcode2Btn').addEventListener('click', function() { showCodeImage('code2.png'); });
+    document.getElementById('barcode3Btn').addEventListener('click', function() { showCodeImage('code3.png'); });
+    document.getElementById('barcode4Btn').addEventListener('click', function() { showCodeImage('code4.png'); });
 
     function closeConfigImageModal() {
-      const modal = document.getElementById('configImageModal');
-      if (modal) modal.style.display = 'none';
+      document.getElementById('configImageModal').style.display = 'none';
     }
-    // Se removió el botón/acciones; solo mostramos advertencia
-    const backToHomeFromFormBtn = document.getElementById('backToHomeFromFormBtn');
-    if (backToHomeFromFormBtn) backToHomeFromFormBtn.addEventListener('click', function(){ try{ document.getElementById('barcodeForm').reset(); }catch(e){} showHome(); });
 
-    // Pantalla inicial
     showHome();
 
-    // Apertura de bluetooth-internals con modal integrado
-    const BLUETOOTH_INTERNALS_URL = 'chrome://bluetooth-internals';
-
+    // Modal de instrucciones
     function showBluetoothModal() {
-      const modal = document.getElementById('bluetoothModal');
-      const link = document.getElementById('bluetoothLink');
-      modal.style.display = 'flex';
-      link.textContent = BLUETOOTH_INTERNALS_URL;
-      link.setAttribute('href', BLUETOOTH_INTERNALS_URL);
+      document.getElementById('bluetoothModal').style.display = 'flex';
       document.getElementById('copyFeedback').style.display = 'none';
     }
 
     function closeBluetoothModal() {
-      const modal = document.getElementById('bluetoothModal');
-      modal.style.display = 'none';
+      document.getElementById('bluetoothModal').style.display = 'none';
     }
 
     function copyBluetoothLink() {
+      const textToCopy = 'chrome://bluetooth-internals';
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(BLUETOOTH_INTERNALS_URL)
+        navigator.clipboard.writeText(textToCopy)
           .then(() => {
             const fb = document.getElementById('copyFeedback');
+            fb.innerText = translations[currentLang].copied;
             fb.style.display = 'block';
-            setTimeout(() => { fb.style.display = 'none'; }, 1500);
+            setTimeout(() => { fb.style.display = 'none'; }, 2000);
           })
           .catch(() => {});
       }
@@ -798,21 +705,13 @@
     function openNewTab() {
       try {
         window.open('about:blank', '_blank');
-        // Al abrir, cerramos el modal para volver atrás automáticamente
         closeBluetoothModal();
       } catch (e) {}
     }
 
-    // Acción principal del botón (asegura compatibilidad si addEventListener falla)
-    function onOpenBluetoothClick() {
-      showBluetoothModal();
-    }
+    document.getElementById('openBluetoothBtn').addEventListener('click', showBluetoothModal);
 
-    // Limpieza de código: se eliminaron funciones no utilizadas
-
-    document.getElementById('openBluetoothBtn').addEventListener('click', onOpenBluetoothClick);
-
-    document.getElementById("barcodeForm").addEventListener("submit", async function(event) {
+    document.getElementById("barcodeForm").addEventListener("submit", function(event) {
       event.preventDefault();
       const macRaw = document.getElementById("mac").value.trim();
       if (!macRaw) {
@@ -820,7 +719,6 @@
         return;
       }
 
-      // Limpia separadores y deja 12 hex
       const macClean = macRaw.replace(/[^0-9A-Fa-f]/g, '').toUpperCase();
       if (!macClean || macClean.length !== 12) {
         alert(translations[currentLang].alert);
@@ -831,17 +729,11 @@
       const dataToEncode = prefix + macClean;
       const encodedData = encodeURIComponent(dataToEncode);
 
+      // Usar API de barcode local o alternativa segura
       const barcodeURL = "https://barcode.tec-it.com/barcode.ashx?data=" + encodedData + "&code=Code128&translate-esc=on";
 
       const resultDiv = document.getElementById("result");
-      let metaHtml = '';
-      // Logo de Internal Systems desde el repositorio (ajusta URL si es necesario)
-      const logoUrl = 'Logo Internal Systems-01.png';
-      metaHtml += `<div class=\"result-logo\"><img class=\"logo-print\" src=\"${logoUrl}\" alt=\"Internal Systems\"></div>`;
-      resultDiv.innerHTML = `
-        ${metaHtml}
-        <img src="${barcodeURL}" alt="Código de Barras">
-      `;
+      resultDiv.innerHTML = `<img src="${barcodeURL}" alt="Código de Barras">`;
 
       document.getElementById("formContainer").style.display = "none";
       document.getElementById("resultContainer").style.display = "block";
@@ -855,3 +747,4 @@
   </script>
 </body>
 </html>
+
